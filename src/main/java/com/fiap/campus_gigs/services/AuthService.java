@@ -17,17 +17,22 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CepService cepService;
 
     public User register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.email())) {
             throw new EmailAlreadyExistsException(request.email());
         }
 
+        var address = cepService.lookup(request.zipCode()); // novo
+
         User user = User.builder()
                 .name(request.name())
                 .email(request.email())
                 .passwordHash(passwordEncoder.encode(request.password()))
                 .zipCode(request.zipCode())
+                .city(address.localidade())   // novo
+                .state(address.uf())          // novo
                 .role(Role.USER)
                 .build();
 
