@@ -1,9 +1,11 @@
 package com.fiap.campus_gigs.controllers;
 
 import com.fiap.campus_gigs.dtos.LoginRequest;
+import com.fiap.campus_gigs.dto.LoginResponse;
 import com.fiap.campus_gigs.dtos.RegisterRequest;
 import com.fiap.campus_gigs.dtos.UserResponse;
 import com.fiap.campus_gigs.services.AuthService;
+import com.fiap.campus_gigs.services.JwtService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final JwtService jwtService;
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest request) {
@@ -24,8 +27,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponse> login(@Valid @RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         var user = authService.authenticate(request);
-        return ResponseEntity.ok(UserResponse.from(user));
+        var token = jwtService.generateToken(user.getEmail(), user.getRole().name());
+        return ResponseEntity.ok(new LoginResponse(token, UserResponse.from(user)));
     }
 }
