@@ -1,0 +1,36 @@
+services:
+  db:
+    image: gvenzl/oracle-free:23-slim
+    container_name: campusgigs-db
+    environment:
+      ORACLE_PASSWORD: campusgigs
+      APP_USER: campusgigs
+      APP_USER_PASSWORD: campusgigs
+    ports:
+      - "1522:1521"
+    volumes:
+      - campusgigs-db-data:/opt/oracle/oradata
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 10s
+      timeout: 10s
+      retries: 20
+      start_period: 60s
+
+  app:
+    build: .
+    container_name: campusgigs-app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: 1521
+      DB_SERVICE: FREEPDB1
+      DB_USER: campusgigs
+      DB_PASSWORD: campusgigs
+    ports:
+      - "8080:8080"
+
+volumes:
+  campusgigs-db-data:
