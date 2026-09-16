@@ -19,8 +19,7 @@ public class CepService {
         try {
             response = viaCepClient.getByCep(cep);
         } catch (RestClientException ex) {
-            // Serviço externo fora do ar, lento ou timeout: não deixamos a
-            // operação silenciosamente incompleta, respondemos 503 explicando.
+
             throw new CepServiceUnavailableException();
         }
 

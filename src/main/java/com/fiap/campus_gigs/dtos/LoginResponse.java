@@ -1,4 +1,4 @@
-package com.fiap.campus_gigs.dto;
+package com.fiap.campus_gigs.dtos;
 
 import com.fiap.campus_gigs.dtos.UserResponse;
 
