@@ -24,15 +24,15 @@ public class AuthService {
             throw new EmailAlreadyExistsException(request.email());
         }
 
-        var address = cepService.lookup(request.zipCode()); // novo
+        var address = cepService.lookup(request.zipCode());
 
         User user = User.builder()
                 .name(request.name())
                 .email(request.email())
                 .passwordHash(passwordEncoder.encode(request.password()))
                 .zipCode(request.zipCode())
-                .city(address.localidade())   // novo
-                .state(address.uf())          // novo
+                .city(address.localidade())
+                .state(address.uf())
                 .role(Role.USER)
                 .build();
 
