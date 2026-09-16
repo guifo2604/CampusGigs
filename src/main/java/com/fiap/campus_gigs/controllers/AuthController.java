@@ -1,7 +1,7 @@
 package com.fiap.campus_gigs.controllers;
 
 import com.fiap.campus_gigs.dtos.LoginRequest;
-import com.fiap.campus_gigs.dto.LoginResponse;
+import com.fiap.campus_gigs.dtos.LoginResponse;
 import com.fiap.campus_gigs.dtos.RegisterRequest;
 import com.fiap.campus_gigs.dtos.UserResponse;
 import com.fiap.campus_gigs.services.AuthService;
